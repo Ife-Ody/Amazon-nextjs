@@ -1,6 +1,5 @@
 module.exports = {
-  mode: "jit",
-  purge: [
+  content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
@@ -16,7 +15,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: { gradientColorStops: ["responsive", "dark", "hover", "focus", "active"] },
   },
   plugins: [require("@tailwindcss/line-clamp")],
 };
