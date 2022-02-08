@@ -5,13 +5,24 @@ import {
   SearchIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/outline";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { Router, useRouter } from "next/router";
+import { selectItems } from "../slices/basketSlice";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const items = useSelector(selectItems);
+
   return (
     <header>
       {/* top  */}
       <div className="flex items-center flex-grow p-1 py-2 bg-amazon_blue">
-        <div className="flex items-center flex-grow mt-2 cursor-pointer sm:flex-grow-0">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center flex-grow mt-2 cursor-pointer sm:flex-grow-0"
+        >
           <Image
             src="https://links.papareact.com/f90"
             width={150}
@@ -29,17 +40,17 @@ const Header = () => {
         </div>
         {/* right */}
         <div className="flex items-center mx-6 space-x-6 text-xs text-white whitespace-nowrap">
-          <div className="link">
-            <p>Hello, Ife</p>
+          <div onClick={!session ? signIn : signOut} className="link">
+            {session ? `Hello, ${session.user.name}` : "Sign In"}
             <p className="font-extrabold md:text-sm">Account & Lists</p>
           </div>
           <div className="link">
             <p>Returns</p>
             <p className="font-extrabold md:text-sm">& Orders</p>
           </div>
-          <div className="relative flex items-center link">
+          <div onClick={()=>router.push("/checkout")} className="relative flex items-center link">
             <span className="absolute top-0 right-0 w-4 h-4 font-bold text-center text-black bg-yellow-400 rounded-full md:right-10">
-              4
+              {items.length}
             </span>
             <ShoppingCartIcon className="h-10"></ShoppingCartIcon>
             <p className="hidden mt-2 font-extrabold md:text-sm md:inline">
